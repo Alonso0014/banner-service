@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>배너 제작 서비스</title>
+  <style>
+    :root {
+      --theme-color: #ffeb3b;
+      --blur: 16px;
+      --gf: rgba(255,255,255,0.08);
+      --gf-hover: rgba(255,255,255,0.13);
+      --gb1: rgba(255,255,255,0.28);
+      --gb2: rgba(255,255,255,0.08);
+      --tp: rgba(255,255,255,0.95);
+      --ts: rgba(255,255,255,0.55);
+      --accent: #ffeb3b;
+      --r: 14px;
+      --bg: #1c1f2e;
+      --font: "Inter","Segoe UI",sans-serif;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      font-family: var(--font);
+      min-height: 100vh;
+      background: var(--bg);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .tablet-container {
+      width: 768px;
+      max-width: 100%;
+      min-height: 90vh;
+      border-radius: calc(var(--r) * 1.5);
+      overflow: hidden;
+      position: relative;
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(var(--blur));
+      -webkit-backdrop-filter: blur(var(--blur));
+      border-top: 1px solid var(--gb1);
+      border-left: 1px solid var(--gb1);
+      border-right: 1px solid var(--gb2);
+      border-bottom: 1px solid var(--gb2);
+      box-shadow: 0 8px 48px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+
+    /* HEADER */
+    .header {
+      padding: 30px 40px 26px;
+      border-bottom: 1px solid var(--gb2);
+      background: rgba(255,235,59,0.05);
+    }
+    .header h1 {
+      font-size: 26px; font-weight: 700;
+      color: var(--tp);
+      letter-spacing: -0.5px;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    }
+    .header h1 span { color: var(--accent); }
+
+    /* CONTENT */
+    .content { padding: 30px 40px 40px; overflow-y: auto; }
+
+    .form-group { margin-bottom: 26px; }
+
+    .form-label {
+      display: block;
+      font-size: 11px; font-weight: 600;
+      color: var(--ts);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .required { color: var(--accent); margin-left: 3px; }
+    .optional { color: rgba(255,255,255,0.3); margin-left: 4px; font-weight: 400; text-transform: none; letter-spacing: 0; font-size: 12px; }
+
+    /* inputs */
+    input[type="text"], input[type="number"], textarea {
+      width: 100%;
+      padding: 11px 15px;
+      background: var(--gf);
+      border-top: 1px solid var(--gb1);
+      border-left: 1px solid var(--gb1);
+      border-right: 1px solid var(--gb2);
+      border-bottom: 1px solid var(--gb2);
+      border-radius: var(--r);
+      font-size: 14px; font-family: var(--font);
+      color: var(--tp);
+      transition: all 0.25s ease-out;
+      outline: none;
+    }
+    input::placeholder, textarea::placeholder { color: var(--ts); }
+    input:focus, textarea:focus {
+      background: var(--gf-hover);
+      border-top-color: rgba(255,235,59,0.5);
+      border-left-color: rgba(255,235,59,0.5);
+      box-shadow: 0 0 0 2px rgba(255,235,59,0.12), 0 0 12px rgba(255,235,59,0.08);
+    }
+    textarea { resize: vertical; min-height: 88px; }
+
+    .size-input-group { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .size-input-group input { width: 100px; }
+    .size-input-group span { color: var(--ts); font-size: 14px; }
+
+    .quick-size-buttons { display: flex; gap: 7px; flex-wrap: wrap; }
+    .quick-size-btn {
+      padding: 6px 13px;
+      background: var(--gf);
+      border-top: 1px solid var(--gb1);
+      border-left: 1px solid var(--gb1);
+      border-right: 1px solid transparent;
+      border-bottom: 1px solid transparent;
+      border-radius: 8px;
+      font-size: 12px; font-family: var(--font);
+      color: var(--ts); cursor: pointer;
+      transition: all 0.2s ease-out;
+    }
+    .quick-size-btn:hover { background: rgba(255,235,59,0.12); color: var(--accent); border-top-color: rgba(255,235,59,0.35); border-left-color: rgba(255,235,59,0.35); }
+
+    .search-group { display: flex; gap: 8px; }
+    .search-group input { flex: 1; }
+
+    /* BUTTONS */
+    .btn {
+      padding: 11px 20px;
+      border-radius: var(--r);
+      font-size: 14px; font-weight: 600; font-family: var(--font);
+      cursor: pointer; transition: all 0.25s ease-out; border: none;
+    }
+    .btn-glass {
+      background: var(--gf);
+      border-top: 1px solid var(--gb1);
+      border-left: 1px solid var(--gb1);
+      border-right: 1px solid var(--gb2);
+      border-bottom: 1px solid var(--gb2);
+      color: var(--tp);
+    }
+    .btn-glass:hover { background: var(--gf-hover); }
+    .btn-primary {
+      background: var(--accent);
+      color: #1a1200; width: 100%;
+      padding: 15px; font-size: 15px; margin-top: 6px;
+      box-shadow: 0 4px 20px rgba(255,235,59,0.25);
+    }
+    .btn-primary:hover { background: #ffe000; transform: translateY(-1px); box-shadow: 0 6px 24px rgba(255,235,59,0.35); }
+    .btn-primary:active { transform: translateY(0); }
+
+    /* TABS */
+    .tab-container {
+      background: var(--gf);
+      border-top: 1px solid var(--gb1);
+      border-left: 1px solid var(--gb1);
+      border-right: 1px solid var(--gb2);
+      border-bottom: 1px solid var(--gb2);
+      border-radius: var(--r);
+      overflow: hidden;
+    }
+    .tab-header {
+      display: flex;
+      border-bottom: 1px solid var(--gb2);
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 12px 16px;
+      background: transparent;
+      border: none;
+      font-size: 13px; font-weight: 600; font-family: var(--font);
+      color: var(--ts);
+      cursor: pointer;
+      transition: all 0.2s ease-out;
+      position: relative;
+    }
+    .tab-btn.active {
+      color: var(--accent);
+      background: rgba(255,235,59,0.07);
+    }
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--accent);
+      border-radius: 2px 2px 0 0;
+    }
+    .tab-btn:first-child { border-right: 1px solid var(--gb2); }
+
+    .tab-panel { display: none; padding: 20px; }
+    .tab-panel.active { display: block; }
+
+    /* SLIDER inside tab */
+    .slider-container { position: relative; }
+    .slider-wrapper { overflow: hidden; }
+    #slider {
+      display: flex; gap: 10px;
+      transition: transform 0.3s ease-out;
+    }
+    .reference-item { min-width: 140px; position: relative; cursor: pointer; }
+    .reference-item img {
+      width: 140px; height: 140px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: all 0.25s ease-out;
+      display: block;
+    }
+    .reference-item.selected img { opacity: 0.6; border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
+    .instagram-checkbox {
+      position: absolute; top: 7px; right: 7px;
+      width: 22px; height: 22px;
+      border: 2px solid rgba(255,255,255,0.7); border-radius: 50%;
+      background: rgba(0,0,0,0.35);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 700; color: #fff;
+      transition: all 0.2s ease-out;
+    }
+    .reference-item.selected .instagram-checkbox { background: var(--accent); border-color: var(--accent); color: #1a1200; }
+
+    .slider-controls {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-top: 12px;
+    }
+    .slider-nav { display: flex; gap: 6px; }
+    .slider-nav button {
+      width: 30px; height: 30px; border-radius: 50%;
+      background: var(--gf);
+      border-top: 1px solid var(--gb1); border-left: 1px solid var(--gb1);
+      border-right: 1px solid transparent; border-bottom: 1px solid transparent;
+      color: var(--tp); font-size: 13px; cursor: pointer;
+      transition: all 0.2s ease-out;
+    }
+    .slider-nav button:hover { background: rgba(255,235,59,0.15); color: var(--accent); }
+
+    .selected-count { font-size: 12px; color: var(--ts); }
+    .selection-controls { display: flex; gap: 6px; }
+    .sel-btn {
+      padding: 5px 11px; font-size: 11px; font-family: var(--font);
+      background: var(--gf);
+      border-top: 1px solid var(--gb1); border-left: 1px solid var(--gb1);
+      border-right: 1px solid transparent; border-bottom: 1px solid transparent;
+      border-radius: 6px; color: var(--ts); cursor: pointer;
+      transition: all 0.2s ease-out;
+    }
+    .sel-btn:hover { background: rgba(255,235,59,0.1); color: var(--accent); }
+
+    /* search row inside tab */
+    .tab-search { display: flex; gap: 8px; margin-bottom: 16px; }
+    .tab-search input { flex: 1; }
+
+    /* FILE UPLOAD */
+    .file-upload-label {
+      display: block;
+      border: 1.5px dashed rgba(255,255,255,0.22);
+      border-radius: var(--r);
+      padding: 36px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s ease-out;
+      width: 100%;
+    }
+    .file-upload-label:hover {
+      border-color: rgba(255,235,59,0.45);
+      background: rgba(255,235,59,0.04);
+    }
+    .file-upload-label input { display: none; }
+    .upload-icon { font-size: 28px; margin-bottom: 10px; }
+    .upload-text { font-size: 14px; color: var(--ts); }
+    .upload-sub { font-size: 12px; color: rgba(255,255,255,0.28); margin-top: 6px; }
+
+    #uploaded-files { margin-top: 12px; }
+    .file-item {
+      display: inline-block; padding: 6px 13px;
+      background: var(--gf);
+      border-top: 1px solid var(--gb1); border-radius: 8px;
+      margin: 3px; font-size: 12px; color: var(--ts);
+    }
+
+    /* CHAT */
+    #chat-screen { display: none; height: 90vh; flex-direction: column; }
+
+    .chat-header {
+      padding: 20px 40px;
+      border-bottom: 1px solid var(--gb2);
+      background: rgba(255,235,59,0.04);
+      display: flex; align-items: center; gap: 12px;
+    }
+    .chat-header h2 { font-size: 17px; font-weight: 700; color: var(--tp); }
+    .back-btn {
+      width: 30px; height: 30px; border-radius: 50%;
+      background: var(--gf);
+      border-top: 1px solid var(--gb1); border-left: 1px solid var(--gb1);
+      border-right: 1px solid transparent; border-bottom: 1px solid transparent;
+      color: var(--ts); font-size: 14px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s ease-out; flex-shrink: 0;
+    }
+    .back-btn:hover { background: var(--gf-hover); color: var(--tp); }
+
+    .chat-messages {
+      flex: 1; overflow-y: auto;
+      padding: 28px 40px;
+      display: flex; flex-direction: column; gap: 14px;
+    }
+    .chat-messages::-webkit-scrollbar { width: 3px; }
+    .chat-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 2px; }
+
+    .message { display: flex; }
+    .message.user { justify-content: flex-end; }
+    .message-content {
+      max-width: 75%; padding: 13px 17px;
+      border-radius: var(--r);
+      font-size: 14px; line-height: 1.6;
+    }
+    .message.assistant .message-content {
+      background: var(--gf);
+      border-top: 1px solid var(--gb1); border-left: 1px solid var(--gb1);
+      border-right: 1px solid var(--gb2); border-bottom: 1px solid var(--gb2);
+      color: var(--tp);
+      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+    .message.user .message-content {
+      background: rgba(255,235,59,0.88);
+      color: #1a1200; font-weight: 500;
+      box-shadow: 0 3px 14px rgba(255,235,59,0.18);
+    }
+
+    .banner-preview {
+      margin-top: 14px; padding: 14px;
+      background: rgba(255,255,255,0.04);
+      border-top: 1px solid var(--gb2);
+      border-radius: 10px; text-align: center;
+    }
+    .banner-preview img { max-width: 100%; border-radius: 6px; box-shadow: 0 4px 20px rgba(0,0,0,0.35); }
+
+    .chat-input-area {
+      padding: 18px 40px;
+      border-top: 1px solid var(--gb2);
+      background: rgba(255,235,59,0.03);
+    }
+    .chat-input-group { display: flex; gap: 8px; }
+    .chat-input-group input { flex: 1; }
+    .chat-send-btn {
+      padding: 11px 20px;
+      background: var(--accent); color: #1a1200;
+      border: none; border-radius: var(--r);
+      font-size: 14px; font-weight: 600; font-family: var(--font);
+      cursor: pointer; transition: all 0.2s ease-out; white-space: nowrap;
+    }
+    .chat-send-btn:hover { background: #ffe000; }
+
+    .new-banner-btn {
+      margin-top: 10px; width: 100%;
+      background: transparent;
+      border: 1px solid var(--gb2);
+      border-radius: var(--r);
+      color: var(--ts); padding: 9px;
+      font-size: 13px; font-family: var(--font);
+      cursor: pointer; transition: all 0.2s ease-out;
+    }
+    .new-banner-btn:hover { background: var(--gf); color: var(--tp); }
+  </style>
+</head>
+<body>
+<div class="tablet-container">
+
+  <!-- 초기 화면 -->
+  <div id="initial-screen">
+    <div class="header">
+      <h1>배너 <span>제작</span> 서비스</h1>
+    </div>
+    <div class="content">
+
+      <div class="form-group">
+        <label class="form-label">배너 사이즈 <span class="required">*</span></label>
+        <div class="size-input-group">
+          <input type="number" id="width" placeholder="가로">
+          <span>×</span>
+          <input type="number" id="height" placeholder="세로">
+          <span>px</span>
+        </div>
+        <div class="quick-size-buttons">
+          <button class="quick-size-btn" onclick="setSize(1080,1080)">1080×1080</button>
+          <button class="quick-size-btn" onclick="setSize(1200,628)">1200×628</button>
+          <button class="quick-size-btn" onclick="setSize(728,90)">728×90</button>
+          <button class="quick-size-btn" onclick="setSize(300,250)">300×250</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">배너 용도 <span class="required">*</span></label>
+        <input type="text" id="purpose" placeholder="예: 인스타그램 피드 광고">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">추가 요구사항 <span class="optional">(선택)</span></label>
+        <textarea id="requirements" placeholder="배너에 포함되어야 할 요소, 분위기, 스타일 등을 자유롭게 입력하세요"></textarea>
+      </div>
+
+      <!-- 탭: 레퍼런스 찾기 / 파일 업로드 -->
+      <div class="form-group">
+        <label class="form-label">레퍼런스 <span class="optional">(선택)</span></label>
+        <div class="tab-container">
+          <div class="tab-header">
+            <button class="tab-btn active" onclick="switchTab('pinterest')">🔍 레퍼런스 찾기 (by Pinterest)</button>
+            <button class="tab-btn" onclick="switchTab('upload')">📁 파일 업로드</button>
+          </div>
+
+          <!-- Pinterest 탭 -->
+          <div id="tab-pinterest" class="tab-panel active">
+            <div class="tab-search">
+              <input type="text" id="pinterest-search" placeholder="키워드를 입력하세요">
+              <button class="btn btn-glass" onclick="searchPinterest()">검색</button>
+            </div>
+            <div id="pinterest-results">
+              <div style="text-align:center; color: var(--ts); font-size: 13px; padding: 20px 0;">
+                키워드를 검색하면 레퍼런스 이미지가 여기에 표시됩니다
+              </div>
+            </div>
+          </div>
+
+          <!-- 업로드 탭 -->
+          <div id="tab-upload" class="tab-panel">
+            <label class="file-upload-label" for="file-input">
+              <div class="upload-icon">📁</div>
+              <div class="upload-text">클릭하여 파일 선택</div>
+              <div class="upload-sub">이미지 파일만 업로드 가능 (최대 15개)</div>
+              <input type="file" id="file-input" multiple accept="image/*" onchange="handleFileUpload(event)">
+            </label>
+            <div id="uploaded-files"></div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" onclick="generateBanner()">배너 생성하기</button>
+    </div>
+  </div>
+
+  <!-- 채팅 화면 -->
+  <div id="chat-screen">
+    <div class="chat-header">
+      <button class="back-btn" onclick="resetToInitial()">←</button>
+      <h2>배너 수정하기</h2>
+    </div>
+    <div class="chat-messages" id="chat-messages"></div>
+    <div class="chat-input-area">
+      <div class="chat-input-group">
+        <input type="text" id="chat-input" placeholder="수정 요청을 입력하세요...">
+        <button class="chat-send-btn" onclick="sendMessage()">전송</button>
+      </div>
+      <button class="new-banner-btn" onclick="resetToInitial()">새 배너 만들기</button>
+    </div>
+  </div>
+
+</div>
+<script>
+  let slidePos = 0, selectedRefs = new Set(), selOrder = [];
+  const MAX = 15;
+  const dummies = Array.from({length:15}, (_,i) => ({ id:`ref-${i}`, url:`https://picsum.photos/200/200?random=${i+20}` }));
+
+  function switchTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', (i===0&&tab==='pinterest')||(i===1&&tab==='upload')));
+    document.getElementById('tab-pinterest').classList.toggle('active', tab==='pinterest');
+    document.getElementById('tab-upload').classList.toggle('active', tab==='upload');
+  }
+
+  function setSize(w,h) { document.getElementById('width').value=w; document.getElementById('height').value=h; }
+
+  function searchPinterest() {
+    const kw = document.getElementById('pinterest-search').value;
+    if (!kw) return alert('검색어를 입력하세요');
+    document.getElementById('pinterest-results').innerHTML = `
+      <div class="slider-container">
+        <div class="slider-wrapper">
+          <div id="slider">${dummies.map(img=>`
+            <div class="reference-item" onclick="toggleRef('${img.id}',this)">
+              <img src="${img.url}" alt="ref">
+              <div class="instagram-checkbox"></div>
+            </div>`).join('')}
+          </div>
+        </div>
+        <div class="slider-controls">
+          <div class="slider-nav">
+            <button onclick="slideL()">←</button>
+            <button onclick="slideR()">→</button>
+          </div>
+          <div class="selected-count" id="sel-count">선택: 0 / ${MAX}</div>
+          <div class="selection-controls">
+            <button class="sel-btn" onclick="selAll()">전체선택</button>
+            <button class="sel-btn" onclick="deselAll()">해제</button>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function slideL() { if(slidePos>0){slidePos--;updateSlider();} }
+  function slideR() { if(slidePos<dummies.length-4){slidePos++;updateSlider();} }
+  function updateSlider() { const s=document.getElementById('slider'); if(s) s.style.transform=`translateX(${slidePos*-150}px)`; }
+
+  function toggleRef(id, el) {
+    if(selectedRefs.has(id)){ selectedRefs.delete(id); selOrder=selOrder.filter(x=>x!==id); el.classList.remove('selected'); }
+    else { selectedRefs.add(id); selOrder.push(id); el.classList.add('selected'); }
+    updateCB(); updateCount();
+  }
+  function updateCB() {
+    document.querySelectorAll('.reference-item').forEach(item => {
+      const cb = item.querySelector('.instagram-checkbox');
+      const id = item.getAttribute('onclick').match(/'([^']+)'/)[1];
+      const i = selOrder.indexOf(id);
+      cb.textContent = i!==-1 ? i+1 : '';
+    });
+  }
+  function selAll() {
+    document.querySelectorAll('.reference-item').forEach(item => {
+      const id = item.getAttribute('onclick').match(/'([^']+)'/)[1];
+      if(!selectedRefs.has(id)){ selectedRefs.add(id); selOrder.push(id); item.classList.add('selected'); }
+    });
+    updateCB(); updateCount();
+  }
+  function deselAll() {
+    selectedRefs.clear(); selOrder=[];
+    document.querySelectorAll('.reference-item').forEach(i=>i.classList.remove('selected'));
+    updateCB(); updateCount();
+  }
+  function updateCount() {
+    const el = document.getElementById('sel-count');
+    if(el) el.textContent=`선택: ${selectedRefs.size} / ${MAX}`;
+  }
+
+  function handleFileUpload(e) {
+    if(e.target.files.length>15) return alert('최대 15개까지만 업로드 가능합니다');
+    document.getElementById('uploaded-files').innerHTML =
+      Array.from(e.target.files).map(f=>`<div class="file-item">📄 ${f.name}</div>`).join('');
+  }
+
+  let currentContext = '';
+
+  function addMessage(role, html) {
+    const msgs = document.getElementById('chat-messages');
+    msgs.innerHTML += `<div class="message ${role}"><div class="message-content">${html}</div></div>`;
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  async function generateBanner() {
+    const w = document.getElementById('width').value;
+    const h = document.getElementById('height').value;
+    const p = document.getElementById('purpose').value;
+    const r = document.getElementById('requirements').value;
+    if (!w || !h || !p) return alert('필수 항목을 모두 입력하세요');
+
+    document.getElementById('initial-screen').style.display = 'none';
+    document.getElementById('chat-screen').style.display = 'flex';
+    document.getElementById('chat-messages').innerHTML = '';
+    addMessage('assistant', '배너 디자인을 생성 중입니다... ⏳');
+
+    try {
+      const res = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ width: w, height: h, purpose: p, requirements: r })
+      });
+      const data = await res.json();
+      if (data.status !== 'success') throw new Error(data.error || '생성 실패');
+
+      currentContext = `사이즈: ${w}x${h}px, 용도: ${p}, 디자인 브리프: ${data.design_brief}`;
+      const brief = data.design_brief.replace(/\n/g, '<br>');
+      document.getElementById('chat-messages').innerHTML = '';
+      addMessage('assistant', `
+        <strong>${w}×${h}px ${p} 배너 디자인 브리프</strong><br><br>${brief}
+        <div class="banner-preview">
+          <img src="https://via.placeholder.com/${w}x${Math.min(Number(h),400)}/ffeb3b/1a1200?text=${w}x${h}" alt="배너 미리보기">
+        </div>
+        수정이 필요하시면 아래에 입력해주세요.
+      `);
+    } catch (e) {
+      document.getElementById('chat-messages').innerHTML = '';
+      addMessage('assistant', `오류가 발생했습니다: ${e.message}`);
+    }
+  }
+
+  async function sendMessage() {
+    const inp = document.getElementById('chat-input');
+    const msg = inp.value.trim();
+    if (!msg) return;
+    inp.value = '';
+    addMessage('user', msg);
+    addMessage('assistant', '수정 요청을 처리 중입니다... ⏳');
+
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: msg, context: currentContext })
+      });
+      const data = await res.json();
+      if (data.status !== 'success') throw new Error(data.error || '응답 실패');
+
+      const msgs = document.getElementById('chat-messages');
+      const lastMsg = msgs.lastElementChild;
+      if (lastMsg) lastMsg.remove();
+      addMessage('assistant', data.reply.replace(/\n/g, '<br>'));
+    } catch (e) {
+      const msgs = document.getElementById('chat-messages');
+      const lastMsg = msgs.lastElementChild;
+      if (lastMsg) lastMsg.remove();
+      addMessage('assistant', `오류가 발생했습니다: ${e.message}`);
+    }
+  }
+
+  function resetToInitial() {
+    if(!confirm('새 배너를 만드시겠습니까?')) return;
+    document.getElementById('chat-screen').style.display='none';
+    document.getElementById('initial-screen').style.display='block';
+    document.getElementById('chat-messages').innerHTML='';
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('chat-input')?.addEventListener('keypress', e => { if(e.key==='Enter') sendMessage(); });
+  });
+</script>
+</body>
+</html>
