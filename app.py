@@ -35,7 +35,7 @@ def pinterest_search():
         return jsonify({'status': 'error', 'error': '검색어 필요'}), 400
 
     res = requests.get(
-        'https://api.pinterest.com/v5/pins',
+        'https://api.pinterest.com/v5/search/pins',
         headers={'Authorization': f'Bearer {PINTEREST_TOKEN}'},
         params={'query': query, 'page_size': 15}
     )
