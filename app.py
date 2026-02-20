@@ -73,6 +73,7 @@ def generate():
   "design_brief": "디자인 의도 설명"
 }}
 
+중요: font 값은 반드시 "Inter" 로만 사용하세요. 다른 폰트는 지원하지 않습니다.
 gradient를 사용할 경우 background는 null로 하고 gradient는 아래 형식:
 [{{"position": 0, "color": {{"r":0.1,"g":0.1,"b":0.9,"a":1}}}}, {{"position": 1, "color": {{"r":0.5,"g":0.0,"b":0.8,"a":1}}}}]
 
@@ -109,3 +110,4 @@ def chat():
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)
+    
