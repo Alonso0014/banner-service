@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify, send_from_directory
+from flask_cors import CORS
 from dotenv import load_dotenv
 import os
 import requests
@@ -6,6 +7,7 @@ import requests
 load_dotenv()
 
 app = Flask(__name__, static_folder='static')
+CORS(app)
 
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
 GEMINI_URL = f'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={GEMINI_API_KEY}'
@@ -18,23 +20,6 @@ def call_gemini(prompt):
     if 'candidates' not in data:
         raise Exception(f'Gemini 에러: {data}')
     return data['candidates'][0]['content']['parts'][0]['text']
-
-def add_cors(response):
-    origin = request.headers.get('Origin', '*')
-    response.headers['Access-Control-Allow-Origin'] = origin if origin else '*'
-    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
-    response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
-    response.headers['Access-Control-Allow-Credentials'] = 'true'
-    return response
-
-@app.after_request
-def after_request(response):
-    return add_cors(response)
-
-@app.route('/', defaults={'path': ''}, methods=['OPTIONS'])
-@app.route('/<path:path>', methods=['OPTIONS'])
-def options_handler(path):
-    return jsonify({}), 200
 
 @app.route('/')
 def index():
@@ -110,4 +95,3 @@ def chat():
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)
-    
