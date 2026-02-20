@@ -24,12 +24,12 @@ def handle_options():
         return response
 
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
-GEMINI_URL = f'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={GEMINI_API_KEY}'
+GEMINI_URL = f'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={GEMINI_API_KEY}'
 
 def call_gemini(prompt):
     res = requests.post(GEMINI_URL, json={
         'contents': [{'parts': [{'text': prompt}]}]
-    }, timeout=12)
+    }, timeout=30)
     data = res.json()
     if 'candidates' not in data:
         raise Exception(f'Gemini 에러: {data}')
