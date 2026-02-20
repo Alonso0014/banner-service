@@ -20,9 +20,11 @@ def call_gemini(prompt):
     return data['candidates'][0]['content']['parts'][0]['text']
 
 def add_cors(response):
-    response.headers['Access-Control-Allow-Origin'] = '*'
+    origin = request.headers.get('Origin', '*')
+    response.headers['Access-Control-Allow-Origin'] = origin if origin else '*'
     response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
     response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+    response.headers['Access-Control-Allow-Credentials'] = 'true'
     return response
 
 @app.after_request
@@ -84,7 +86,9 @@ gradient를 사용할 경우 background는 null로 하고 gradient는 아래 형
         spec = json.loads(clean)
         if isinstance(spec, list):
             spec = spec[0]
-    except:
+    except Exception as e:
+        print(f'파싱 실패: {e}')
+        print(f'RAW: {raw[:500]}')
         return jsonify({'status': 'error', 'error': '스펙 파싱 실패', 'raw': raw}), 500
 
     return jsonify({'status': 'success', 'design_spec': spec, 'design_brief': spec.get('design_brief', '')})
